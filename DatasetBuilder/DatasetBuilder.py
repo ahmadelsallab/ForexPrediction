@@ -150,9 +150,9 @@ class DatasetBuilder(object):
         except Exception as e:
             print('URL error ' + str(e) )
 
-    
-    def ParseNewsURL(self, url):
-                                
+    # url = 'http://feeds.marketwatch.com/marketwatch/realtimeheadlines?format=xml'
+    def ParseNewsURL(self):
+        url = 'http://feeds.marketwatch.com/marketwatch/realtimeheadlines?format=xml'
         f = urllib.request.urlopen(url)
         xmldoc = minidom.parse(f)    
         
