@@ -14,7 +14,7 @@ for li in lis:
     headlines = li.find('a').contents[0]
     print(headlines)
 '''
-
+'''
 from FeaturesExtractor.sentiwordnet import SentiWordNetCorpusReader, SentiSynset
 #from nltk.corpus.reader.sentiwordnet import SentiWordNetCorpusReader, SentiSynset
 
@@ -27,6 +27,7 @@ print(syn.pos_score)
 print(syn.neg_score)
 print(syn.obj_score)
 synsets = swn.senti_synsets('slow')
+'''
 
 '''
 for synset in synsets:
@@ -107,3 +108,45 @@ for headline in news_headlines:
     print(headline['text'] + '\n' + headline['time_stamp'])
 d.DumpNewsCSV(news_headlines)
 '''
+
+'''
+import urllib.request
+from bs4 import BeautifulSoup
+import json
+f = urllib.request.urlopen('http://www.myfxbook.com/getHistoricalDataByDate.json?&start=2015-03-01%2000:00&end=2015-03-24%2000:00&symbol=EURUSD&timeScale=60&userTimeFormat=0&rand=0.5403805375099182')
+#f = open('C:\\Users\\ASALLAB\\Google Drive\\Guru_Forex\\Code\\forex\\DatasetBuilder\\input\\EURUSD Euro vs US Dollar EUR USD Historical Forex Data   Myfxbook.html', 'r', encoding = 'utf-8')
+'''
+
+'''
+soup = BeautifulSoup(f.read())  
+
+#for b in soup.findAll('span', { "name" : "timeEURUSD" }):
+for b in soup.findAll('tr', { "onmouseover" : "this.className='normalActive';" }):
+    #print(b.text.strip())
+    print(b.findAll('span', { "name" : "timeEURUSD" })[0].text.strip())
+    print(b.findAll('span', { "name" : "closeEURUSD" })[0].text.strip())
+    #print(b.findAll('h5', { "class" : "itemposttime" })[0].text.strip())
+    #print(b.findAll('span'))
+'''
+'''
+json_data = json.loads(f.read().decode('utf8'))
+#json_data = json.loads(f)
+#print(json_data)
+soup = BeautifulSoup(json_data['content']['historyData'])  
+
+#for b in soup.findAll('span', { "name" : "timeEURUSD" }):
+for b in soup.findAll('tr', { "onmouseover" : "this.className='normalActive';" }):
+    #print(b.text.strip())
+    print(b.findAll('span', { "name" : "timeEURUSD" })[0].text.strip())
+    print(b.findAll('span', { "name" : "closeEURUSD" })[0].text.strip())
+    #print(b.findAll('h5', { "class" : "itemposttime" })[0].text.strip())
+    #print(b.findAll('span'))
+'''
+from DatasetBuilder.DatasetBuilder import DatasetBuilder
+
+d = DatasetBuilder()
+prices = d.ParsePricesURL()
+
+for price in prices:
+    print(price['value'] + '\n' + price['time_stamp'])
+d.DumpPricesCSV(prices)

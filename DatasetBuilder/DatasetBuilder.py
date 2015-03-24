@@ -10,6 +10,7 @@ from bs4 import BeautifulSoup
 from xml.dom import minidom
 import urllib.request
 import calendar
+import json
 
 class DatasetBuilder(object):
     '''
@@ -46,10 +47,19 @@ class DatasetBuilder(object):
                 price = {}
                 
                 # Price is the average
-                price['value'] = (row[1] + row[2]) / 2
+                #price['value'] = (row[1] + row[2]) / 2
                 
+                # Price is the close price
+                price['value'] = row[0]
+                
+                '''
                 # Read the time stamp. Skip the last 3 entries
                 time_stamp_str = row[0][:-3]
+                time_stamp = datetime.datetime(time_stamp_str[0:3] , time_stamp_str[4:5], time_stamp_str[6:7], time_stamp_str[9:10], time_stamp_str[11:12], time_stamp_str[13:14])
+                price['time_stamp'] = time_stamp 
+                '''
+                
+                time_stamp_str = row[1]
                 time_stamp = datetime.datetime(time_stamp_str[0:3] , time_stamp_str[4:5], time_stamp_str[6:7], time_stamp_str[9:10], time_stamp_str[11:12], time_stamp_str[13:14])
                 price['time_stamp'] = time_stamp 
                 
@@ -180,6 +190,33 @@ class DatasetBuilder(object):
             news_headlines.append(headline)
         
         return news_headlines
+
+    def ParsePricesURL(self):
+        url = 'http://www.myfxbook.com/getHistoricalDataByDate.json?&start=2015-03-01%2000:00&end=2015-03-24%2000:00&symbol=EURUSD&timeScale=60&userTimeFormat=0&rand=0.5403805375099182'
+        f = urllib.request.urlopen(url)
+        json_data = json.loads(f.read().decode('utf8'))
+        soup = BeautifulSoup(json_data['content']['historyData'])  
+        prices = []
+        for b in soup.findAll('tr', { "onmouseover" : "this.className='normalActive';" }):
+            price = {}
+            price['value'] = b.findAll('span', { "name" : "closeEURUSD" })[0].text.strip()
+            #Mar 23, 2015 14:00
+            datetime = b.findAll('span', { "name" : "timeEURUSD" })[0].text.strip()
+            
+            month_name = datetime.split(',')[0].split(' ')[0]
+            month = str(list(calendar.month_abbr).index(month_name)).zfill(2)
+            day = datetime.split(',')[0].split(' ')[1]
+            
+            year = datetime.split(',')[1].split(' ')[1]
+            hour_min =  datetime.split(',')[1].split(' ')[2]
+            hour = hour_min.split(':')[0]
+            min = hour_min.split(':')[1]
+            sec = '00'
+            
+            price['time_stamp'] = str(year + month + day + ' ' + hour + min + sec)
+            prices.append(price)
+        
+        return prices
     
     def DumpNewsCSV(self, news_headlines):
         
@@ -193,7 +230,20 @@ class DatasetBuilder(object):
         
         w.writerows(data)
         f.close()
+
+    def DumpPricesCSV(self, prices):
         
+        f = open(self.csvPricesFileName, 'w', newline='')
+        w = csv.writer(f, delimiter=',')
+        data = []
+        data.append(['price', 'time_stamp (yyyymmdd hhmmss)'])
+        
+        for price in prices:
+            data.append([price['value'], price['time_stamp']])
+        
+        w.writerows(data)
+        f.close()      
+ 
     def align_news_prices(self):
                 
         # Initialize the aligned structure        

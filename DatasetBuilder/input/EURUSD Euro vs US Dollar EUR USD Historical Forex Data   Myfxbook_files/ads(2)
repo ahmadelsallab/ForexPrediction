@@ -1,0 +1,50 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Web Filter Violation</title>
+    <style type="text/css">
+        html, body { margin: 0; padding: 0; font-family: Verdana, Arial, sans-serif; font-size: 10pt; }
+        h1, h2 { height: 82px; text-indent: -999em; margin: 0; padding: 0; margin: 0; }
+        div { margin: 0; padding: 0; }
+        div.header { background: url(http://pubads.g.doubleclick.net:8008/XX/YY/ZZ/CI/MGPGHGPGPFGHCDPFGGOGFGEH) 0 0 repeat-x; height: 82px; }
+        div.header h1 { background: url(http://pubads.g.doubleclick.net:8008/XX/YY/ZZ/CI/MGPGHGPGPFGHCDPFGGHGFHBGCHEGPFHHGG) 0 0 no-repeat; }
+        div.header h2 { background: url(http://pubads.g.doubleclick.net:8008/XX/YY/ZZ/CI/MGPGHGPGPFGHCDPFGGOGFGEH) 0 -82px no-repeat; width: 160px; float: right; }
+        div.sidebar { width: 195px; height: 200px; float: left; }
+        div.main { padding: 5px; margin-left: 195px; }
+        div.buttons { margin-top: 30px; text-align: right; }
+        h3 { margin: 36px 0; font-size: 16pt; }
+        .blocked      h3 { color: #c00; }
+        .authenticate h3 { color: #36c; }
+        h2.fgd_icon { background: url(http://pubads.g.doubleclick.net:8008/XX/YY/ZZ/CI/MGPGHGPGPFGHCDPFGGOGFGEH) 0 -166px repeat-x; width: 90px; height: 92px; margin: 48px auto; }
+        .blocked      h2.fgd_icon { background-position: 0 -166px; }
+        .authenticate h2.fgd_icon { background-position: -89px -166px; }
+        form { width: 300px; margin: 30px 0; }
+        label { display: block; width: 300px; margin: 5px 0; line-height: 25px; }
+        label input { width: 200px; border: 1px solid #7f9db9; height: 20px; float: right; }
+    </style>
+</head>
+<body class="blocked">
+    <div class="header">
+        <h2>Powered By Fortinet</h2>
+        <h1>FortiGuard Web Filtering</h1>
+    </div>
+    <div class="sidebar">
+        <h2 class="fgd_icon">blocked</h2>
+    </div>
+    <div class="main">
+<h3>Web Page Blocked!</h3>
+<div class="notice">
+    <p>You have tried to access a web page which is in violation of your internet usage policy.</p>
+    <p>
+        URL: pubads.g.doubleclick.net/gampad/ads?gdfp_req=1&amp;correlator=552223466586112&amp;output=json_html&amp;callback=googletag.impl.pubads.setAdContentsBySlotForSync&amp;impl=s&amp;sfv=1-0-2&amp;iu=%2F15597568%2FSky_120x600&amp;sz=120x600&amp;cookie_enabled=1&amp;lmt=1427137362&amp;dt=1427137362848&amp;cc=20&amp;frm=20&amp;biw=1349&amp;bih=643&amp;oid=3&amp;adx=1050&amp;ady=143&amp;adk=3569046025&amp;gut=v2&amp;ifi=3&amp;u_tz=120&amp;u_his=1&amp;u_java=true&amp;u_h=768&amp;u_w=1366&amp;u_ah=728&amp;u_aw=1366&amp;u_cd=24&amp;u_nplug=8&amp;u_nmime=91&amp;u_sd=1&amp;flash=15.0.0&amp;url=http%3A%2F%2Fwww.myfxbook.com%2Fforex-market%2Fcurrencies%2FEURUSD-historical-dat<br />
+        Category: Advertising
+    </p>
+    <p>
+       
+    </p>
+    <p> To have the rating of this web page re-evaluated <a href="http://url.fortinet.net/rate/submit.php?id=454F35322817747B32236A2C3A687C22&cat=11&loc=http://pubads%2eg%2edoubleclick%2enet%2fgampad%2fads%3fgdfp%5freq%3d1%26correlator%3d552223466586112%26output%3djson%5fhtml%26callback%3dgoogletag%2eimpl%2epubads%2esetAdContentsBySlotForSync%26impl%3ds%26sfv%3d1%2d0%2d2%26iu%3d%252F15597568%252FSky%5f120x600%26sz%3d120x600%26cookie%5fenabled%3d1%26lmt%3d1427137362%26dt%3d1427137362848%26cc%3d20%26frm%3d20%26biw%3d1349%26bih%3d643%26oid%3d3%26adx%3d1050%26ady%3d143%26adk%3d3569046025%26gut%3dv2%26ifi%3d3%26u%5ftz%3d120%26u%5fhis%3d1%26u%5fjava%3dtrue%26u%5fh%3d768%26u%5fw%3d1366%26u%5fah%3d728%26u%5faw%3d1366%26u%5fcd%3d24%26u%5fnplug%3d8%26u%5fnmime%3d91%26u%5fsd%3d1%26flash%3d15%2e0%2e0%26url%3dhttp%253A%252F%252Fwww%2emyfxbook%2ecom%252Fforex%2dmarket%252Fcurrencies%252FEURUSD%2dhistorical%2ddat&ver=6">please click here</a>.</p>
+</div>
+    </div>
+</body>
+</html>
