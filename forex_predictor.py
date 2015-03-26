@@ -28,37 +28,56 @@ for price in dataSetBuilder.get_prices():
 fullPrices = []
 labels = []
 sizes = []
+colors = []
+time_stamps = []
 x = []
 i = 0
 up = 0
 down = 0 
-for point in dataSetBuilder.full_set:
+for point in reversed(dataSetBuilder.full_set):
     x.append(i)
     i = i + 1
     fullPrices.append(point['price'])
     if(point['signal'] == 'Up'):
-        labels.append('b')
-        sizes.append(np.pi*50)
-        up = up + 1  
+        colors.append('b')
+        #sizes.append(np.pi*50)
+        sizes.append(np.pi*0)
+        labels.append('+')
+        up = up + 1
+        time_stamps.append(point['time_stamp'])  
     elif(point['signal'] == 'Down'):
-        labels.append('r')
-        sizes.append(np.pi*50)
+        colors.append('r')
+        #sizes.append(np.pi*50)
+        sizes.append(np.pi*0)
+        labels.append('-')
         down = down + 1
+        time_stamps.append(point['time_stamp'])
     else:
-        labels.append('g')
-        sizes.append(np.pi*5)
+        colors.append('g')
+        #sizes.append(np.pi*5)
+        sizes.append(np.pi*0)
+        labels.append('.')
+        time_stamps.append('.')
 
 # Dataset prices and text
 prices = []
 headlines = []
-for item in dataSet:
+for item in reversed(dataSet):
     prices.append(float(item['price']))
     headlines.append(item['headline'])
     
 #plt.plot(fullPrices)
-plt.scatter(x, fullPrices, s = sizes, c = labels, marker = 'o')
+y = fullPrices
+plt.scatter(x, y, s = sizes, c = colors, marker = '.')
+
+for label, x, y in zip(labels, x, y):
+    plt.annotate(label, xy = (x, y))
 
 #plt.plot([1,2,3,4])
+plt.xlabel('Time stamp')
+plt.ylabel('Price stamp')
+plt.title('Prices vs. sentiment')
+plt.axes()
 plt.show()
 #plt.savefig('C:\\Users\\ASALLAB\\Google Drive\\Guru_Forex\\Code\\forex\\plot1.png')
 # Initialize FeaturesExtractor

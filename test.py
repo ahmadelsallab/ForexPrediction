@@ -174,7 +174,14 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 #plt.plot([1,2,3,4], ['+','-','+','+'])
-plt.scatter([1,2,3,4], [1,2,3,4], s= [0, np.pi*10, 0, np.pi*100], c = ['g', 'g', 'b', 'b'], marker = '+')
+#plt.scatter([1,2,3,4], [1,2,3,4], s= [0, np.pi*10, 0, np.pi*100], c = ['g', 'g', 'b', 'b'], marker = '+')
+plt.scatter([1,2,3,4], [1,2,3,4], s= [0, np.pi*0, 0, np.pi*0], c = ['g', 'g', 'b', 'b'], marker = '+')
+labels = ['+','-','+','+']
+x = [1,2,3,4]
+y = [1,2,3,4]
+for label, x, y in zip(labels, x, y):
+    plt.annotate(label, xy = (x, y))
+    
 plt.ylabel('some numbers')
 plt.show() # If you show the image is not saved to the file
 #plt.savefig('C:\\Users\\ASALLAB\\Google Drive\\Guru_Forex\\Code\\forex\\plot.png')
@@ -187,7 +194,4 @@ subset_b = df[~cond].dropna()
 plt.scatter(subset_a.col1, subset_a.col2, s=120, c='b', label='col3 > 300')
 plt.scatter(subset_b.col1, subset_b.col2, s=60, c='r', label='col3 <= 300') 
 plt.legend()
-
-
-
-
+'''
