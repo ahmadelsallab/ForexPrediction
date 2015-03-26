@@ -8,14 +8,14 @@ class Classifier(object):
         '''
         Constructor
         '''
-    def NNTrain(self):
-    def NNTest(self):
+    #def NNTrain(self):
+    #def NNTest(self):
         
     def LexiconTest(self, features, labels):
         i = 0
         accuracy = 0
         for item in features:
-            if item[0] > item[1]
+            if item[0] > item[1]:
                 #pos_score > neg_score
                 # Up
                 label = 1
@@ -24,7 +24,7 @@ class Classifier(object):
                 label = 2
             
             # Did we get it right?
-            if label == labels[i]
+            if label == labels[i]:
                 accuracy = accuracy + 1
             
             i = i + 1

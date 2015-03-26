@@ -19,9 +19,10 @@ from FeaturesExtractor.sentiwordnet import SentiWordNetCorpusReader, SentiSynset
 #from nltk.corpus.reader.sentiwordnet import SentiWordNetCorpusReader, SentiSynset
 
 
-swn_filename = '.\\Classifier\\input\\SentiWordNet_3.0.0_20130122.txt'
+swn_filename = '.\\FeaturesExtractor\\input\\SentiWordNet_3.0.0_20130122.txt'
 swn = SentiWordNetCorpusReader(swn_filename)
-syn = swn.senti_synset('breakdown.n.03')
+#syn = swn.senti_synset('breakdown.n.03')
+syn = swn.senti_synsets('slow')[0]
 #syn = swn.senti_synset('euro')
 print(syn.pos_score)
 print(syn.neg_score)
@@ -142,6 +143,7 @@ for b in soup.findAll('tr', { "onmouseover" : "this.className='normalActive';" }
     #print(b.findAll('h5', { "class" : "itemposttime" })[0].text.strip())
     #print(b.findAll('span'))
 '''
+'''
 from DatasetBuilder.DatasetBuilder import DatasetBuilder
 
 d = DatasetBuilder()
@@ -150,3 +152,42 @@ prices = d.ParsePricesURL()
 for price in prices:
     print(price['value'] + '\n' + price['time_stamp'])
 d.DumpPricesCSV(prices)
+
+'''
+'''
+import numpy as np
+import neurolab as nl
+# Create train samples
+input = np.random.uniform(-0.5, 0.5, (10, 2))
+target = (input[:, 0] + input[:, 1]).reshape(10, 1)
+# Create network with 2 inputs, 5 neurons in input layer and 1 in output layer
+net = nl.net.newff([[-0.5, 0.5], [-0.5, 0.5]], [5, 1])
+# Train process
+err = net.train(input, target, show=15)
+# Test
+net.sim([[0.2, 0.1]]) # 0.2 + 0.1
+print(net.sim([[0.2, 0.1]]))
+'''
+
+from DatasetBuilder.DatasetBuilder import DatasetBuilder
+import matplotlib.pyplot as plt
+import numpy as np
+
+#plt.plot([1,2,3,4], ['+','-','+','+'])
+plt.scatter([1,2,3,4], [1,2,3,4], s= [0, np.pi*10, 0, np.pi*100], c = ['g', 'g', 'b', 'b'], marker = '+')
+plt.ylabel('some numbers')
+plt.show() # If you show the image is not saved to the file
+#plt.savefig('C:\\Users\\ASALLAB\\Google Drive\\Guru_Forex\\Code\\forex\\plot.png')
+
+'''
+# Different markers scatter:
+cond = df.col3 > 300
+subset_a = df[cond].dropna()
+subset_b = df[~cond].dropna()
+plt.scatter(subset_a.col1, subset_a.col2, s=120, c='b', label='col3 > 300')
+plt.scatter(subset_b.col1, subset_b.col2, s=60, c='r', label='col3 <= 300') 
+plt.legend()
+
+
+
+

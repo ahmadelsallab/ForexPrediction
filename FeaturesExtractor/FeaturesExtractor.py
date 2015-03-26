@@ -18,7 +18,7 @@ class FeaturesExtractor(object):
         swn_filename = '.\\FeaturesExtractor\\input\\SentiWordNet_3.0.0_20130122.txt'
         self.swn = SentiWordNetCorpusReader(swn_filename)
         
-        self.labelsMap = {'Up' : 1, 'Down': 2}
+        self.labelsMap = {'Up' : 1, 'Down': 2, 'Neutral' : 3}
         
     def ConstructBowWithSentiWordNet(self, dataSet):
              
@@ -96,13 +96,20 @@ class FeaturesExtractor(object):
             pos_score = 0
             neg_score = 0
             obj_score = 0                
-            for word in item['headline'].split(' '):                
+            for word in item['headline'].split(' '):     
+                syns = self.swn.senti_synsets(word)
+                
+                curr_pos_score, curr_neg_score, curr_obj_score = self.calc_avg_senti_scores(syns)
+                pos_score = pos_score + curr_pos_score
+                neg_score = neg_score + curr_neg_score
+                obj_score = obj_score + curr_obj_score   
                 try:
-                    syn = self.swn.senti_synset(word)
-
-                    pos_score = pos_score + syn.pos_score
-                    neg_score = neg_score + syn.neg_score
-                    obj_score = obj_score + syn.obj_score
+                    syns = self.swn.senti_synsets(word)
+                    
+                    curr_pos_score, curr_neg_score, curr_obj_score = self.calc_avg_senti_scores(syns)
+                    pos_score = pos_score + curr_pos_score
+                    neg_score = neg_score + curr_neg_score
+                    obj_score = obj_score + curr_obj_score
                     
                 except:
                     # No entry in Senti WordNet
@@ -112,3 +119,24 @@ class FeaturesExtractor(object):
             labels.append(self.labelsMap[item['signal']])
             
         return features, labels 
+
+    def calc_avg_senti_scores(self, syns):
+        pos_score = 0
+        neg_score = 0
+        obj_score = 0
+
+        for syn in syns:
+            try:
+                pos_score = pos_score + syn.pos_score
+                neg_score = neg_score + syn.neg_score
+                obj_score = obj_score + syn.obj_score
+            except Exception as e:
+                pass
+        
+        if(len(syns) > 0):
+            pos_score = pos_score / len(syns)
+            neg_score = neg_score / len(syns)
+            obj_score = obj_score / len(syns)
+
+        
+        return pos_score, neg_score, obj_score

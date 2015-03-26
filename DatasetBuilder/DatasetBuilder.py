@@ -60,7 +60,7 @@ class DatasetBuilder(object):
                 '''
                 
                 time_stamp_str = row[1]
-                time_stamp = datetime.datetime(time_stamp_str[0:3] , time_stamp_str[4:5], time_stamp_str[6:7], time_stamp_str[9:10], time_stamp_str[11:12], time_stamp_str[13:14])
+                time_stamp = datetime.datetime(int(time_stamp_str[0:4]) , int(time_stamp_str[4:6]), int(time_stamp_str[6:8]), int(time_stamp_str[9:11]), int(time_stamp_str[11:13]), int(time_stamp_str[13:15]))
                 price['time_stamp'] = time_stamp 
                 
                 # Insert in the prices list
@@ -104,7 +104,7 @@ class DatasetBuilder(object):
                 
                 # Read the time stamp.                
                 time_stamp_str = row[1]
-                time_stamp = datetime.datetime(time_stamp_str[0:3] , time_stamp_str[4:5], time_stamp_str[6:7], time_stamp_str[9:10], time_stamp_str[11:12], time_stamp_str[13:14])
+                time_stamp = datetime.datetime(int(time_stamp_str[0:4]) , int(time_stamp_str[4:6]), int(time_stamp_str[6:8]), int(time_stamp_str[9:11]), int(time_stamp_str[11:13]), int(time_stamp_str[13:15]))
                 headline['time_stamp'] = time_stamp
                 
                 # Insert in the prices list
@@ -256,12 +256,28 @@ class DatasetBuilder(object):
         prices = self.get_prices()
         
         # Loop on all news 1 by 1
+        self.full_set = []
+        for price in prices:
+            full_entry = {}
+            full_entry['headline'] = []
+            full_entry['price'] = price['value']
+            full_entry['signal'] = 'None'
+            full_entry['time_stamp'] = price['time_stamp']
+            self.full_set.append(full_entry)
+            
         for headline in news_headlines:
             aligned_data_set_entry = {}
             # Search for it in the prices list
             # note: the prices list is sorted
+            i = 0
             for price in prices:
-                if headline['time_stamp'] >= price['time_stamp'] & headline['time_stamp'] <= price['time_stamp']:
+                if(i == len(prices) - 1):
+                    # Set any small date
+                    next_time_stamp = datetime.datetime(1900,1,1)
+                else:
+                    next_time_stamp = prices[i+1]['time_stamp']
+                    
+                if ((headline['time_stamp'] <= price['time_stamp']) and (headline['time_stamp'] >= next_time_stamp)):
                     # Found
                     # Set the headline text
                     aligned_data_set_entry['headline'] = headline['text']
@@ -269,24 +285,33 @@ class DatasetBuilder(object):
                     # Set the associated point price
                     aligned_data_set_entry['price'] = price['value']
                     
-                    
-                    if(len(aligned_data_set) > 0):
-                        # The list is not empty, so we need to compare to the last point price
-                        last_point_price = aligned_data_set[-1]['price']
-                                               
-                        if(price['value'] > last_point_price):
-                            aligned_data_set_entry['signal'] = 'Up'
-                        elif (price['value'] < last_point_price):
-                            aligned_data_set_entry['signal'] = 'Down'
-                        else:
-                            aligned_data_set_entry['signal'] = 'Neutral'
-                            
+                    # Last point price is the price 4h ago (2 intervals)
+                    # We add because the prices list is inversed, so the entry at 0 is the latest
+                    # We subtract 1 because the index starts at 0
+                    if(i < len(prices) - 4):
+                        last_point_price = prices[i + 4 - 1]['value']
                     else:
-                        # For the first entry, the signal is always neutral
-                        aligned_data_set_entry['signal'] = 'Neutral'
+                        # If no available 2 intervals (4h) take the one just before, so 1h ago
+                        last_point_price = prices[i + 1]['value']
+                                           
+                    if(price['value'] > last_point_price):
+                        aligned_data_set_entry['signal'] = 'Up'
+                    #elif (price['value'] =< last_point_price):
+                    # In the paper (Text mining of news-headlines for FOREX market prediction_ A Multi-layer Dimension Reduction Algorithm with semantics and sentiment.pdf)
+                    # when the 2 prices are the same, the label is N
+                    elif(price['value'] <= last_point_price):
+                        aligned_data_set_entry['signal'] = 'Down'
+                    #else:
+                    #    aligned_data_set_entry['signal'] = 'Neutral'
+                            
+
                         
+                    self.full_set[i]['signal'] = aligned_data_set_entry['signal'] 
+                    self.full_set[i]['headline'].append(aligned_data_set_entry['headline'])
+                    
                     aligned_data_set.append(aligned_data_set_entry)
                     break
+                i = i + 1
                 
         
         return aligned_data_set
