@@ -168,7 +168,7 @@ err = net.train(input, target, show=15)
 net.sim([[0.2, 0.1]]) # 0.2 + 0.1
 print(net.sim([[0.2, 0.1]]))
 '''
-
+'''
 from DatasetBuilder.DatasetBuilder import DatasetBuilder
 import matplotlib.pyplot as plt
 import numpy as np
@@ -185,7 +185,7 @@ for label, x, y in zip(labels, x, y):
 plt.ylabel('some numbers')
 plt.show() # If you show the image is not saved to the file
 #plt.savefig('C:\\Users\\ASALLAB\\Google Drive\\Guru_Forex\\Code\\forex\\plot.png')
-
+'''
 '''
 # Different markers scatter:
 cond = df.col3 > 300
@@ -195,3 +195,16 @@ plt.scatter(subset_a.col1, subset_a.col2, s=120, c='b', label='col3 > 300')
 plt.scatter(subset_b.col1, subset_b.col2, s=60, c='r', label='col3 <= 300') 
 plt.legend()
 '''
+
+import numpy as np
+import neurolab as nl
+# Create train samples
+input = np.random.uniform(-0.5, 0.5, (10, 2))
+target = (input[:, 0] + input[:, 1]).reshape(10, 1)
+# Create network with 2 inputs, 5 neurons in input layer and 1 in output layer
+net = nl.net.newff([[-0.5, 0.5], [-0.5, 0.5]], [5, 1])
+# Train process
+err = net.train(input, target, show=15)
+# Test
+net.sim([[0.2, 0.1]]) # 0.2 + 0.1
+print(net.sim([[0.2, 0.1]]))
