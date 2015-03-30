@@ -13,38 +13,49 @@ class Classifier(object):
         Constructor
         '''
     def NNTrain(self, features, labels, plot=False):
-        #self.net = nl.net.newff([[0, 1]]*len(features[0]), [len(features[0]),1])
-        self.net = nl.net.newff([[0, 1]], [len(features[0]), 2])
+        formattedLabels = self.NNFormatLabels(labels, 2)
+        self.net = nl.net.newff([[0, 1]]*len(features[0]), [len(features[0]), 2])
+        #self.net = nl.net.newff([[0, 1]], [len(features[0]), 2])
         # Train process
-        reg_train_err = self.net.train(features, labels, show=15)
+        reg_train_err = self.net.train(features, formattedLabels, show=15)
         
         obtainedTargets = self.net.sim(features)
         
         i = 0
         train_err = 0
+        maxObtainedTargets = []
         for obtainedTarget in obtainedTargets:
             maxObtainedTarget, max_value = max(enumerate(obtainedTarget), key=operator.itemgetter(1))
+            maxObtainedTargets.append(maxObtainedTarget)
             if(maxObtainedTarget != labels[i]):
                 train_err = train_err + 1
             i = i + 1
         if(plot):
-            self.NNPlotPerformance(train_err, labels, self.net.sim(features))
+            self.NNPlotPerformance(train_err, labels, maxObtainedTargets)
         return train_err
     
     def NNTest(self, features, desiredTargets, plot=False):
         obtainedTargets = self.net.sim(features)
         i = 0
         test_err = 0
+        maxObtainedTargets = []
         for obtainedTarget in obtainedTargets:
             maxObtainedTarget, max_value = max(enumerate(obtainedTarget), key=operator.itemgetter(1))
+            maxObtainedTargets.append(maxObtainedTarget)
             if(maxObtainedTarget != desiredTargets[i]):
                 test_err = test_err + 1
             i = i + 1
         
         if(plot):
-            self.NNPlotPerformance(test_err, desiredTargets, obtainedTargets)
+            self.NNPlotPerformance(test_err, desiredTargets, maxObtainedTargets)
         return test_err
-    
+    def NNFormatLabels(self, labels, nTargets):
+        formatted_labels = []
+        for label in labels:
+            l = [0]*nTargets
+            l[label] = 1
+            formatted_labels.append(l)
+        return formatted_labels
     def NNPlotPerformance(self, err, desiredTargets, obtainedTargets):
         pl.subplot(211)
         pl.plot(err)
@@ -58,7 +69,7 @@ class Classifier(object):
         
         pl.subplot(212)
         pl.plot(x, y1, '-', x , y2, '.')
-        pl.legend(['train target', 'net output'])
+        pl.legend(['Target', 'net output'])
         pl.show()        
     def LexiconTest(self, features, labels):
         i = 0

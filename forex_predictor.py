@@ -102,8 +102,12 @@ testFeatures, testLabels = featuresExtractor.ExtractCollectiveLexiconSentimentFe
 '''
 # This part is extracting the BoW features scoring for the 3 scores per each word
 BoW = featuresExtractor.ConstructBowWithSentiWordNet(dataSet)
+'''
 trainFeatures, trainLabels = featuresExtractor.ExtractBoWSentiWordNetFeatures(trainSet, BoW)
 testFeatures, testLabels = featuresExtractor.ExtractBoWSentiWordNetFeatures(testSet, BoW)
+'''
+trainFeatures, trainLabels = featuresExtractor.ExtractBoWSentiWordNetCollectiveFeatures(trainSet, BoW)
+testFeatures, testLabels = featuresExtractor.ExtractBoWSentiWordNetCollectiveFeatures(testSet, BoW)
 
 # Initialize Classifier
 #######################

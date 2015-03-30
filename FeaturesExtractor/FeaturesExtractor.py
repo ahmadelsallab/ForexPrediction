@@ -57,7 +57,7 @@ class FeaturesExtractor(object):
             feature = []
             for senti_word in bow:                
                 if senti_word in item['headline'].split(' '):
-                    feature.extend([senti_word['pos_score'], senti_word['neg_score'], senti_word['obj_score']])
+                    feature.extend([bow[senti_word]['pos_score'], bow[senti_word]['neg_score'], bow[senti_word]['obj_score']])
                 else:
                     feature.extend([0, 0, 0])
             features.append(feature)
@@ -78,7 +78,7 @@ class FeaturesExtractor(object):
             feature = []
             for senti_word in bow:                
                 if senti_word in item['headline'].split(' '):
-                    feature.extend([(senti_word['pos_score'] + senti_word['neg_score'] + senti_word['obj_score'])/3])
+                    feature.extend([(bow[senti_word]['pos_score'] + bow[senti_word]['neg_score'] + bow[senti_word]['obj_score'])/3])
                 else:
                     feature.extend([0])
             features.append(feature)
