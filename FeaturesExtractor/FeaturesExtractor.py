@@ -29,12 +29,14 @@ class FeaturesExtractor(object):
                 # Insert new words only
                 if word not in bow:
                     try:
-                        syn = self.swn.senti_synset(word)
+                                         
+                        syns = self.swn.senti_synsets(word)
+                        curr_pos_score, curr_neg_score, curr_obj_score = self.calc_avg_senti_scores(syns)
 
                         bow[word] = {}
-                        bow[word]['pos_score'] = syn.pos_score
-                        bow[word]['neg_score'] = syn.neg_score
-                        bow[word]['obj_score'] = syn.obj_score
+                        bow[word]['pos_score'] = curr_pos_score
+                        bow[word]['neg_score'] = curr_neg_score
+                        bow[word]['obj_score'] = curr_obj_score
                     except:
                         # No entry in Senti WordNet
                         continue
@@ -96,13 +98,7 @@ class FeaturesExtractor(object):
             pos_score = 0
             neg_score = 0
             obj_score = 0                
-            for word in item['headline'].split(' '):     
-                syns = self.swn.senti_synsets(word)
-                
-                curr_pos_score, curr_neg_score, curr_obj_score = self.calc_avg_senti_scores(syns)
-                pos_score = pos_score + curr_pos_score
-                neg_score = neg_score + curr_neg_score
-                obj_score = obj_score + curr_obj_score   
+            for word in item['headline'].split(' '):        
                 try:
                     syns = self.swn.senti_synsets(word)
                     
