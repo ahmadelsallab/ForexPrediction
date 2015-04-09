@@ -196,6 +196,7 @@ plt.scatter(subset_b.col1, subset_b.col2, s=60, c='r', label='col3 <= 300')
 plt.legend()
 '''
 
+'''
 import numpy as np
 import neurolab as nl
 # Create train samples
@@ -208,3 +209,24 @@ err = net.train(input, target, show=15)
 # Test
 net.sim([[0.2, 0.1]]) # 0.2 + 0.1
 print(net.sim([[0.2, 0.1]]))
+
+'''
+
+import threading, time, datetime
+now = datetime.datetime.now()
+open_time = datetime.datetime(now.year, now.month, now.day, 18,38,0);
+close_time = datetime.datetime(now.year, now.month, now.day, 18,39,0); 
+
+def isAlarmExpired(time):
+        
+    if((time >= open_time.time())  & (time <= close_time.time())):
+        return True
+    else:
+        return False
+    
+def crawl():
+    print('Crawling now ' + str(datetime.datetime.now()))
+while True:
+    if(isAlarmExpired(datetime.datetime.now().time())):
+        d = threading.Thread(target=crawl)
+        d.start()
