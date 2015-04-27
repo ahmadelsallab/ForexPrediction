@@ -212,6 +212,7 @@ print(net.sim([[0.2, 0.1]]))
 
 '''
 
+'''
 import threading, time, datetime
 now = datetime.datetime.now()
 open_time = datetime.datetime(now.year, now.month, now.day, 18,38,0);
@@ -230,3 +231,103 @@ while True:
     if(isAlarmExpired(datetime.datetime.now().time())):
         d = threading.Thread(target=crawl)
         d.start()
+'''
+
+'''
+# ROC
+#----
+import numpy as np
+import pylab as pl
+from sklearn import svm, datasets
+from sklearn.utils import shuffle
+from sklearn.metrics import roc_curve, auc
+
+random_state = np.random.RandomState(0)
+
+# Import some data to play with
+iris = datasets.load_iris()
+X = iris.data
+y = iris.target
+
+# Make it a binary classification problem by removing the third class
+X, y = X[y != 2], y[y != 2]
+n_samples, n_features = X.shape
+
+# Add noisy features to make the problem harder
+X = np.c_[X, random_state.randn(n_samples, 200 * n_features)]
+
+# shuffle and split training and test sets
+X, y = shuffle(X, y, random_state=random_state)
+half = int(n_samples / 2)
+X_train, X_test = X[:half], X[half:]
+y_train, y_test = y[:half], y[half:]
+
+# Run classifier
+classifier = svm.SVC(kernel='linear', probability=True)
+probas_ = classifier.fit(X_train, y_train).predict_proba(X_test)
+
+# Compute ROC curve and area the curve
+fpr, tpr, thresholds = roc_curve(y_test, probas_[:, 1])
+roc_auc = auc(fpr, tpr)
+print ("Area under the ROC curve : %f" % roc_auc)
+
+# Plot ROC curve
+pl.clf()
+pl.plot(fpr, tpr, label='ROC curve (area = %0.2f)' % roc_auc)
+pl.plot([0, 1], [0, 1], 'k--')
+pl.xlim([0.0, 1.0])
+pl.ylim([0.0, 1.0])
+pl.xlabel('False Positive Rate')
+pl.ylabel('True Positive Rate')
+pl.title('Receiver operating characteristic example')
+pl.legend(loc="lower right")
+pl.show()
+'''
+
+# Precision-Recall:
+#------------------
+import numpy as np
+import pylab as pl
+from sklearn import svm, datasets
+from sklearn.utils import shuffle
+from sklearn.metrics import precision_recall_curve, auc
+
+random_state = np.random.RandomState(0)
+
+# Import some data to play with
+iris = datasets.load_iris()
+X = iris.data
+y = iris.target
+
+# Make it a binary classification problem by removing the third class
+X, y = X[y != 2], y[y != 2]
+n_samples, n_features = X.shape
+
+# Add noisy features to make the problem harder
+X = np.c_[X, random_state.randn(n_samples, 200 * n_features)]
+
+# shuffle and split training and test sets
+X, y = shuffle(X, y, random_state=random_state)
+half = int(n_samples / 2)
+X_train, X_test = X[:half], X[half:]
+y_train, y_test = y[:half], y[half:]
+
+# Run classifier
+classifier = svm.SVC(kernel='linear', probability=True)
+probas_ = classifier.fit(X_train, y_train).predict_proba(X_test)
+
+# Compute Precision recall curve and area the curve
+precision, recall, thresholds = precision_recall_curve(y_test, probas_[:, 1])
+area = auc(recall, precision)
+print ("Area under the ROC curve : %f" % area)
+
+# Plot Precision recall curve
+pl.clf()
+pl.plot(recall, precision, label='Precision-Recall curve')
+pl.xlabel('Recall')
+pl.ylabel('Precision')
+pl.ylim([0.0, 1.05])
+pl.xlim([0.0, 1.0])
+pl.title('Precision-Recall example: AUC=%0.2f' % area)
+pl.legend(loc="lower left")
+pl.show()

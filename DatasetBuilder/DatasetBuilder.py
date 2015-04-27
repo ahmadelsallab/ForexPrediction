@@ -17,7 +17,7 @@ class DatasetBuilder(object):
     classdocs
     '''
 
-
+    
     def __init__(self):
         '''
         Constructor
@@ -191,8 +191,9 @@ class DatasetBuilder(object):
         
         return news_headlines
 
-    def ParsePricesURL(self):
-        url = 'http://www.myfxbook.com/getHistoricalDataByDate.json?&start=2015-03-01%2000:00&end=2015-03-24%2000:00&symbol=EURUSD&timeScale=60&userTimeFormat=0&rand=0.5403805375099182'
+    def ParsePricesURL(self, start):
+        nowString = str(datetime.datetime.now().year) + '-' + str(datetime.datetime.now().month) + '-' + str(datetime.datetime.now().day)
+        url = 'http://www.myfxbook.com/getHistoricalDataByDate.json?&start=' + start + '%2000:00&end=' + nowString +'%2000:00&symbol=EURUSD&timeScale=60&userTimeFormat=0&rand=0.5403805375099182'
         f = urllib.request.urlopen(url)
         json_data = json.loads(f.read().decode('utf8'))
         soup = BeautifulSoup(json_data['content']['historyData'])  
@@ -201,14 +202,14 @@ class DatasetBuilder(object):
             price = {}
             price['value'] = b.findAll('span', { "name" : "closeEURUSD" })[0].text.strip()
             #Mar 23, 2015 14:00
-            datetime = b.findAll('span', { "name" : "timeEURUSD" })[0].text.strip()
+            datetime_url = b.findAll('span', { "name" : "timeEURUSD" })[0].text.strip()
             
-            month_name = datetime.split(',')[0].split(' ')[0]
+            month_name = datetime_url.split(',')[0].split(' ')[0]
             month = str(list(calendar.month_abbr).index(month_name)).zfill(2)
-            day = datetime.split(',')[0].split(' ')[1]
+            day = datetime_url.split(',')[0].split(' ')[1]
             
-            year = datetime.split(',')[1].split(' ')[1]
-            hour_min =  datetime.split(',')[1].split(' ')[2]
+            year = datetime_url.split(',')[1].split(' ')[1]
+            hour_min =  datetime_url.split(',')[1].split(' ')[2]
             hour = hour_min.split(':')[0]
             min = hour_min.split(':')[1]
             sec = '00'
@@ -226,7 +227,8 @@ class DatasetBuilder(object):
         data.append(['headline', 'time_stamp (yyyymmdd hhmmss)'])
         
         for headline in news_headlines:
-            data.append([headline['text'], headline['time_stamp']])
+            time_stamp_str = str(headline['time_stamp'].year).zfill(4) + str(headline['time_stamp'].month).zfill(2) + str(headline['time_stamp'].day).zfill(2) + ' ' +  str(headline['time_stamp'].hour).zfill(2) + str(headline['time_stamp'].minute).zfill(2) + str(headline['time_stamp'].second).zfill(2)
+            data.append([headline['text'], time_stamp_str])
         
         w.writerows(data)
         f.close()
@@ -239,7 +241,8 @@ class DatasetBuilder(object):
         data.append(['price', 'time_stamp (yyyymmdd hhmmss)'])
         
         for price in prices:
-            data.append([price['value'], price['time_stamp']])
+            time_stamp_str = str(price['time_stamp'].year).zfill(4) + str(price['time_stamp'].month).zfill(2) + str(price['time_stamp'].day).zfill(2) + ' ' +  str(price['time_stamp'].hour).zfill(2) + str(price['time_stamp'].minute).zfill(2) + str(price['time_stamp'].second).zfill(2)
+            data.append([price['value'], time_stamp_str])
         
         w.writerows(data)
         f.close()      

@@ -13,6 +13,8 @@ import numpy as np
 ###############################
 dataSetBuilder = DatasetBuilder()
 testSetShare = 0.1
+dataSetBuilder.csvPricesFileName = '.\\crawler\\prices\\prices_16_4_2015_15_30_55.csv'
+dataSetBuilder.csvNewsFileName = '.\\news_all.csv'
 trainSet, testSet = dataSetBuilder.BuildDataSet(testSetShare)
 
 dataSet = []
@@ -75,10 +77,10 @@ for label, x, y in zip(labels, x, y):
 
 #plt.plot([1,2,3,4])
 plt.xlabel('Time stamp')
-plt.ylabel('Price stamp')
+plt.ylabel('Price')
 plt.title('Prices vs. sentiment')
 plt.axes()
-plt.show()
+#plt.show()
 #plt.savefig('C:\\Users\\ASALLAB\\Google Drive\\Guru_Forex\\Code\\forex\\plot1.png')
 # Initialize FeaturesExtractor
 ##############################
@@ -94,31 +96,35 @@ trainFeatures, trainLabels = featuresExtractor.ExtractBoWSentiWordNetFeatures(tr
 testFeatures, testLabels = featuresExtractor.ExtractBoWSentiWordNetFeatures(testSet, bow)
 '''
 
-'''
+
 # This part is needed to get the collective sentiment per sentence by summing up the 3 scores
 # It doesn't require a BoW
 trainFeatures, trainLabels = featuresExtractor.ExtractCollectiveLexiconSentimentFeatures(trainSet)
 testFeatures, testLabels = featuresExtractor.ExtractCollectiveLexiconSentimentFeatures(testSet)
+
 '''
 # This part is extracting the BoW features scoring for the 3 scores per each word
 BoW = featuresExtractor.ConstructBowWithSentiWordNet(dataSet)
 '''
+'''
 trainFeatures, trainLabels = featuresExtractor.ExtractBoWSentiWordNetFeatures(trainSet, BoW)
 testFeatures, testLabels = featuresExtractor.ExtractBoWSentiWordNetFeatures(testSet, BoW)
 '''
+'''
 trainFeatures, trainLabels = featuresExtractor.ExtractBoWSentiWordNetCollectiveFeatures(trainSet, BoW)
 testFeatures, testLabels = featuresExtractor.ExtractBoWSentiWordNetCollectiveFeatures(testSet, BoW)
-
+'''
 # Initialize Classifier
 #######################
 classifier = Classifier()
 
 # This part is for lexicon classifier. No training required
-'''
+
+print('Lexicon prediction')
 print('Training accuracy = ' + str(classifier.LexiconTest(trainFeatures, trainLabels)))
 print('Test accuracy = ' + str(classifier.LexiconTest(testFeatures, testLabels)))
-'''
 
+print('NN prediction')
 train_err = classifier.NNTrain(trainFeatures, trainLabels, plot=True)
 test_err = classifier.NNTest(testFeatures, testLabels,  plot=True)
 print('Training accuracy = ' + str((len(trainFeatures) - train_err) / len(trainFeatures)))

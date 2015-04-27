@@ -19,6 +19,7 @@ def CollectPrices():
     for file in os.listdir('.\\crawler\\prices'):        
         if file.endswith(".csv"):
             full_file_name = dirName + '\\' + file
+            print(full_file_name)
             
             d.csvPricesFileName = full_file_name
             
