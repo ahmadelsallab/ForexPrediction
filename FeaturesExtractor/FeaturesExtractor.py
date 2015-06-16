@@ -15,7 +15,8 @@ class FeaturesExtractor(object):
         '''
         Constructor
         '''
-        swn_filename = '.\\FeaturesExtractor\\input\\SentiWordNet_3.0.0_20130122.txt'
+        #swn_filename = '.\\FeaturesExtractor\\input\\SentiWordNet_3.0.0_20130122.txt'
+        swn_filename = 'C:\\Users\\ASALLAB\\Google Drive\\Guru_Forex\Code\\forex\\FeaturesExtractor\\input\\SentiWordNet_3.0.0_20130122.txt'
         self.swn = SentiWordNetCorpusReader(swn_filename)
         
         self.labelsMap = {'Up' : 1, 'Down': 2, 'Neutral' : 3}

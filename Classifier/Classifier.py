@@ -140,3 +140,18 @@ class Classifier(object):
         
         # Score the final accuracy
         return accuracy / len(features)
+    
+    def LexiconClassify(self, features):
+
+        if features[0] > features[1]:
+            #pos_score > neg_score
+            # Up
+            label = 1
+        else:
+            # Down
+            label = 2
+            
+
+        
+        # Score the final accuracy
+        return label

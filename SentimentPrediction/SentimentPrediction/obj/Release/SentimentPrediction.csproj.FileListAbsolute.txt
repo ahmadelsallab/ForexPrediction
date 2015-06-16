@@ -1,0 +1,13 @@
+C:\Users\ASALLAB\AppData\Local\Temporary Projects\SentimentPrediction\bin\Release\SentimentPrediction.exe
+C:\Users\ASALLAB\AppData\Local\Temporary Projects\SentimentPrediction\bin\Release\SentimentPrediction.pdb
+C:\Users\ASALLAB\AppData\Local\Temporary Projects\SentimentPrediction\bin\Release\IronPython.dll
+C:\Users\ASALLAB\AppData\Local\Temporary Projects\SentimentPrediction\bin\Release\Microsoft.Scripting.Core.dll
+C:\Users\ASALLAB\AppData\Local\Temporary Projects\SentimentPrediction\bin\Release\Microsoft.Dynamic.dll
+C:\Users\ASALLAB\AppData\Local\Temporary Projects\SentimentPrediction\bin\Release\Microsoft.Scripting.dll
+C:\Users\ASALLAB\AppData\Local\Temporary Projects\SentimentPrediction\bin\Release\Microsoft.Scripting.Core.xml
+C:\Users\ASALLAB\AppData\Local\Temporary Projects\SentimentPrediction\bin\Release\IronPython.xml
+C:\Users\ASALLAB\AppData\Local\Temporary Projects\SentimentPrediction\bin\Release\Microsoft.Dynamic.xml
+C:\Users\ASALLAB\AppData\Local\Temporary Projects\SentimentPrediction\bin\Release\Microsoft.Scripting.xml
+C:\Users\ASALLAB\AppData\Local\Temporary Projects\SentimentPrediction\obj\Release\ResolveAssemblyReference.cache
+C:\Users\ASALLAB\AppData\Local\Temporary Projects\SentimentPrediction\obj\Release\SentimentPrediction.exe
+C:\Users\ASALLAB\AppData\Local\Temporary Projects\SentimentPrediction\obj\Release\SentimentPrediction.pdb
